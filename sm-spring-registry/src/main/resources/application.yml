@@ -1,0 +1,17 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      # 多个注册中心使用','分割
+      defaultZone: ${eureka.instance.hostname}:${server.port}/eureka/
+    # eureka server作为注册中心，本身也是一个eureka client, 为防止注册自身，需设置为false,集群部署时建议为true,且为互相注册
+    register-with-eureka: false
+    # eureka server 作为注册中心在启动时需要从注册中心集群中获取client信息，在单机部署时需要设置为false,集群部署时建议为true
+    fetch-registry: false
+server:
+  port: 8761
+spring:
+  application:
+    name: registry
+
