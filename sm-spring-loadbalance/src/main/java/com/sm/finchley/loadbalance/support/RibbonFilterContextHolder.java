@@ -1,17 +1,15 @@
 package com.sm.finchley.loadbalance.support;
 
 
+/**
+ * @author lmwl
+ */
 public class RibbonFilterContextHolder {
 
     /**
      * Stores the {@link RibbonFilterContext} for current thread.
      */
-    private static final ThreadLocal<RibbonFilterContext> contextHolder = new InheritableThreadLocal<RibbonFilterContext>() {
-        @Override
-        protected RibbonFilterContext initialValue() {
-            return new DefaultRibbonFilterContext();
-        }
-    };
+    private static final ThreadLocal<RibbonFilterContext> contextHolder = ThreadLocal.withInitial(() -> new DefaultRibbonFilterContext());
 
     /**
      * Retrieves the current thread bound instance of {@link RibbonFilterContext}.

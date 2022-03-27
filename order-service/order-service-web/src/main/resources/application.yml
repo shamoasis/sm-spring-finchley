@@ -6,6 +6,10 @@ eureka:
     service-url:
       # 多个注册中心使用','分割
       defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    metadata-map:
+#      version: dev
+
 spring:
   application:
     name: order-service

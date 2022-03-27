@@ -1,3 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.sm.finchley.loadbalance.support.EurekaRibbonDiscoveryRuleAutoConfiguration,\
-com.sm.finchley.loadbalance.support.NacosRibbonDiscoveryRuleAutoConfiguration
+com.sm.finchley.loadbalance.support.NacosRibbonDiscoveryRuleAutoConfiguration,\
+com.sm.finchley.loadbalance.support.GrayGatewayFilterAutoConfiguration,\
+com.sm.finchley.loadbalance.support.GrayFilterAutoConfiguration

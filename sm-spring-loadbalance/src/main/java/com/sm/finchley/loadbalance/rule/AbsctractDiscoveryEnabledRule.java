@@ -8,12 +8,12 @@ import com.netflix.loadbalancer.PredicateBasedRule;
 import com.sm.finchley.loadbalance.predicate.DiscoveryEnabledPredicate;
 import org.springframework.util.Assert;
 
-public abstract class DiscoveryEnabledRule extends PredicateBasedRule {
+public abstract class AbsctractDiscoveryEnabledRule extends PredicateBasedRule {
 
     private final DiscoveryEnabledPredicate predicate;
 
 
-    public DiscoveryEnabledRule(DiscoveryEnabledPredicate discoveryEnabledPredicate) {
+    public AbsctractDiscoveryEnabledRule(DiscoveryEnabledPredicate discoveryEnabledPredicate) {
         Assert.notNull(discoveryEnabledPredicate, "Parameter 'discoveryEnabledPredicate' can't be null");
 //        this.predicate = createCompositePredicate(discoveryEnabledPredicate, new AvailabilityPredicate(this, null));
         this.predicate = discoveryEnabledPredicate;

@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.netflix.eureka.EurekaDiscoveryClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClientConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
@@ -21,7 +20,6 @@ import org.springframework.context.annotation.Scope;
 @ConditionalOnClass(EurekaDiscoveryClient.class)
 @AutoConfigureBefore(RibbonClientConfiguration.class)
 @ConditionalOnProperty(value = "ribbon.filter.metadata.enabled", matchIfMissing = true)
-@ComponentScan(basePackages = "com.sm.finchley.loadbalance.interceptor")
 @Slf4j
 public class EurekaRibbonDiscoveryRuleAutoConfiguration {
     public EurekaRibbonDiscoveryRuleAutoConfiguration() {

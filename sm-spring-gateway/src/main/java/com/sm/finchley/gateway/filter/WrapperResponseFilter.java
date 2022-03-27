@@ -46,7 +46,7 @@ public class WrapperResponseFilter implements GlobalFilter, Ordered {
                         DataBufferUtils.release(dataBuffer);
                         String rs = new String(content, Charset.forName("UTF-8"));
                         Res response = new Res();
-                        response.setCode(200);
+                        response.setCode(originalResponse.getStatusCode().value());
                         response.setMessage("请求成功");
                         response.setData(rs);
 

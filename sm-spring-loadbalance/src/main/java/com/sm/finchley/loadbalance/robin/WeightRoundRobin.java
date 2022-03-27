@@ -1,13 +1,21 @@
 package com.sm.finchley.loadbalance.robin;
 
 
+import com.netflix.loadbalancer.Server;
+import com.netflix.niws.loadbalancer.DiscoveryEnabledServer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+/**
+ * @author lmwl
+ */
 @Slf4j
 public abstract class WeightRoundRobin {
 
@@ -31,7 +39,7 @@ public abstract class WeightRoundRobin {
      * 服务器数
      */
     protected int serverCount;
-    protected List<Server> servers = new ArrayList<>();
+    protected List<WeightServer> servers = new ArrayList<>();
 
     public static void main(String[] args) {
 //		servers.add(new Server("192.168.1.101", 1));
@@ -55,7 +63,7 @@ public abstract class WeightRoundRobin {
         return aBig.gcd(bBig).intValue();
     }
 
-    public int greatestCommonDivisor(List<Server> servers) {
+    public int greatestCommonDivisor(List<WeightServer> servers) {
         int divisor = 0;
         for (int index = 0, len = servers.size(); index < len - 1; index++) {
             if (index == 0) {
@@ -68,9 +76,9 @@ public abstract class WeightRoundRobin {
         return divisor;
     }
 
-    public int greatestWeight(List<Server> servers) {
+    public int greatestWeight(List<WeightServer> servers) {
         int weight = 0;
-        for (Server server : servers) {
+        for (WeightServer server : servers) {
             if (weight < server.getWeight()) {
                 weight = server.getWeight();
             }
@@ -85,7 +93,7 @@ public abstract class WeightRoundRobin {
      * 权值currentWeight初始化为0，currentIndex初始化为-1 ，当第一次的时候返回 权值取最大的那个服务器，
      * 通过权重的不断递减 寻找 适合的服务器返回，直到轮询结束，权值返回为0
      */
-    public com.netflix.loadbalancer.Server getServer(List<Server> servers) {
+    public com.netflix.loadbalancer.Server getServer(List<WeightServer> servers) {
         while (true) {
             //TODO:servers 数量不同情况下
             currentIndex = (currentIndex + 1) % servers.size();
@@ -107,15 +115,38 @@ public abstract class WeightRoundRobin {
         }
     }
 
-    public abstract com.netflix.loadbalancer.Server choose(List<? extends com.netflix.loadbalancer.Server> servers);
+    public com.netflix.loadbalancer.Server choose(List<? extends com.netflix.loadbalancer.Server> servers) {
+        return getServer(init(servers));
+    }
+
+    public abstract Map<String, String> getServerMetadata(Server server);
+
+    public synchronized List<WeightServer> init(List<? extends com.netflix.loadbalancer.Server> servers) {
+        List<WeightServer> serverList = servers.stream().map(e -> {
+            Map<String, String> metadata = getServerMetadata(e);
+            String weight = metadata.get("weight");
+            log.debug("port:{},weight:{}", e.getPort(), ((DiscoveryEnabledServer) e).getInstanceInfo().getMetadata().get("weight"));
+            return new WeightServer(e, StringUtils.isBlank(weight) ? 1 : Integer.valueOf(weight));
+        }).collect(Collectors.toList());
+
+        boolean update = this.servers.containsAll(serverList);
+
+        if (!update) {
+            maxWeight = greatestWeight(serverList);
+            gcdWeight = greatestCommonDivisor(serverList);
+            serverCount = serverList.size();
+            this.servers = serverList;
+        }
+        return serverList;
+    }
 
 
-    static class Server {
+    public static class WeightServer {
 
         com.netflix.loadbalancer.Server server;
         Integer weight;
 
-        public Server(com.netflix.loadbalancer.Server server, Integer weight) {
+        public WeightServer(com.netflix.loadbalancer.Server server, Integer weight) {
             this.server = server;
             this.weight = weight;
         }
@@ -146,8 +177,8 @@ public abstract class WeightRoundRobin {
             if (obj == null) {
                 return false;
             }
-            if (obj instanceof Server) {
-                Server server = (Server) obj;
+            if (obj instanceof WeightServer) {
+                WeightServer server = (WeightServer) obj;
                 return Objects.equals(this.server.getHostPort(), server.getServer().getHostPort()) &&
                         Objects.equals(this.weight, server.weight);
             } else {
