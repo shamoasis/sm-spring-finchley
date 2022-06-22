@@ -1,5 +1,5 @@
 server:
-  port: 8882
+  port: 8883
 
 eureka:
   client:
@@ -11,7 +11,7 @@ eureka:
       version: dev
 spring:
   application:
-    name: storage-service
+    name: user-service
   data:
     elasticsearch:
       cluster-nodes: localhost:9200

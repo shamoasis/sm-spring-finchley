@@ -30,6 +30,7 @@
         <module>sm-spring-loadbalance</module>
         <module>storage-service</module>
         <module>order-service</module>
+        <module>user-service</module>
     </modules>
 
     <build>

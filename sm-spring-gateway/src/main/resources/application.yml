@@ -22,6 +22,12 @@ spring:
           allow-credentials: true
           max-age: 18000
       routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1 # 移除前缀
         - id: storage-service
           uri: lb://storage-service
           predicates:

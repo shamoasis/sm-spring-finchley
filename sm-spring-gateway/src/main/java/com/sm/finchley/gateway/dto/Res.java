@@ -1,4 +1,4 @@
-package com.sm.finchley.gateway.filter;
+package com.sm.finchley.gateway.dto;
 
 import lombok.Data;
 
