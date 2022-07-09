@@ -29,7 +29,7 @@ public class OrderServiceController implements OrderRestService {
     }
 
     @Override
-    public List<OrderDto> selectOrderByCode(@PathVariable String commodityCode) {
+    public List<OrderDto> selectOrderByCode(@PathVariable("commodityCode") String commodityCode) {
         return orderService.getByCommodityCode(commodityCode);
     }
 }

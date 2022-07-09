@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultRibbonFilterContext implements RibbonFilterContext {
+public class DefaultGrayFilterContext implements GrayFilterContext {
 
     public static final String VERSION = "version";
 
@@ -21,7 +21,7 @@ public class DefaultRibbonFilterContext implements RibbonFilterContext {
      * @param value the attribute value
      */
     @Override
-    public RibbonFilterContext add(String key, String value) {
+    public GrayFilterContext add(String key, String value) {
         attributes.put(key, value);
         return this;
     }
@@ -43,7 +43,7 @@ public class DefaultRibbonFilterContext implements RibbonFilterContext {
      * @param key the context attribute
      */
     @Override
-    public RibbonFilterContext remove(String key) {
+    public GrayFilterContext remove(String key) {
         attributes.remove(key);
         return this;
     }

@@ -1,7 +1,7 @@
 package com.sm.finchley.gateway.filter;
 
-import com.sm.finchley.loadbalance.support.RibbonFilterContext;
-import com.sm.finchley.loadbalance.support.RibbonFilterContextHolder;
+import com.sm.finchley.loadbalance.support.GrayFilterContext;
+import com.sm.finchley.loadbalance.support.GrayFilterContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -24,13 +24,13 @@ public class WeightRoundRibbonFilter implements GlobalFilter, Ordered {
         log.debug(Thread.currentThread().getName());
         String version = exchange.getRequest().getHeaders().getFirst(HEADER_VERSION);
         if (StringUtils.isNotBlank(version)) {
-            RibbonFilterContext currentContext = RibbonFilterContextHolder.getCurrentContext();
+            GrayFilterContext currentContext = GrayFilterContextHolder.getCurrentContext();
             currentContext.add(HEADER_VERSION, version);
         }
         Mono<Void> mono = chain.filter(exchange)
                 .subscriberContext(ctx -> StringUtils.isBlank(version) ? ctx : ctx.put(HEADER_VERSION, version))
                 //reactor  对所有请求都正常处理完成后加一个响应参数，或者是打印日志。
-                .doFinally(signal -> RibbonFilterContextHolder.clearCurrentContext());
+                .doFinally(signal -> GrayFilterContextHolder.clearCurrentContext());
         return mono;
     }
 

@@ -1,7 +1,8 @@
 package com.sm.finchley.gateway.dto;
 
-import org.springframework.cloud.gateway.support.CachedBodyOutputMessage;
+import org.springframework.cloud.gateway.filter.factory.rewrite.CachedBodyOutputMessage;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ReactiveHttpOutputMessage;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Map;

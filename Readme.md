@@ -1,7 +1,35 @@
-## spring cloud gateway 动态权重路由
+# spring cloud gateway 灰度发布，服务路由
+
+
+
+## spring cloud gateway Finchley 动态权重路由
 
 参考：
 [SpringCloud2.x 的权重路由和灰度控制,以及gateway的路由持久化](https://blog.csdn.net/cdy1996/article/details/94316726?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_antiscanv2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-2.pc_relevant_antiscanv2&utm_relevant_index=3)
+
+
+## spring cloud 2020 服务路由
+
+[网关的灰度发布](https://developer.51cto.com/article/665949.html)
+
+Spring Cloud provides its own client-side load-balancer abstraction and implementation. For the load-balancing mechanism, ReactiveLoadBalancer interface has been added and a Round-Robin-based and Random implementations have been provided for it. In order to get instances to select from reactive ServiceInstanceListSupplier is used. Currently we support a service-discovery-based implementation of ServiceInstanceListSupplier that retrieves available instances from Service Discovery using a Discovery Client available in the classpath.
+
+结合文档中的其他内容，提取出几条关键信息：
+
+Spring Cloud LoadBalancer提供了两种负载均衡算法：Round-Robin-based 和 Random，默认使用Round-Robin-based
+![img.png](img.png)
+可以通过实现ServiceInstanceListSupplier来筛选符合要求的服务实例
+
+需要通过 LoadBalancerClient 注解，指定服务级别的负载均衡策略以及实例选择策略
+
+提示：如果大家需要探究SCL的实现原理，可以通过GatewayReactiveLoadBalancerClientAutoConfiguration入手。
+
+自定义灰度发布
+结合上文，利用Spring Cloud LoadBalancer实现灰度我们有两种实现方式：
+
+简单粗暴，直接实现一个新的负载均衡策略，然后通过LoadBalancerClient注解指定服务实例使用此策略。
+
+自定义服务实例筛选逻辑，在返回给前端实例时筛选出符合要求的服务实例，当然也需要通过LoadBalancerClient注解指定服务实例使用此选择器。
 
 ## spring async 上下文问题
 

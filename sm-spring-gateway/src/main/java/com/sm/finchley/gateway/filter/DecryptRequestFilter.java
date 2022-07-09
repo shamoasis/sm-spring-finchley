@@ -39,8 +39,8 @@ import java.util.TreeMap;
 /**
  * @author lmwl
  */
-@Configuration
-@Component
+//@Configuration
+//@Component
 @AllArgsConstructor
 public class DecryptRequestFilter implements GlobalFilter, Ordered {
     private static final String ERROR_MESSAGE = "拒绝服务";

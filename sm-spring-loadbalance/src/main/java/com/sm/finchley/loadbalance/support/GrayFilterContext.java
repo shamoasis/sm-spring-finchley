@@ -2,7 +2,7 @@ package com.sm.finchley.loadbalance.support;
 
 import java.util.Map;
 
-public interface RibbonFilterContext {
+public interface GrayFilterContext {
 
     /**
      * Adds the context attribute.
@@ -11,7 +11,7 @@ public interface RibbonFilterContext {
      * @param value the attribute value
      * @return the context instance
      */
-    RibbonFilterContext add(String key, String value);
+    GrayFilterContext add(String key, String value);
 
     /**
      * Retrieves the context attribute.
@@ -27,7 +27,7 @@ public interface RibbonFilterContext {
      * @param key the context attribute
      * @return the context instance
      */
-    RibbonFilterContext remove(String key);
+    GrayFilterContext remove(String key);
 
     /**
      * Retrieves the attributes.
