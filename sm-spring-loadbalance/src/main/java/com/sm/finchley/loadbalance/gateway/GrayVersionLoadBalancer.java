@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class GrayVersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
-    private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
-    private String serviceId;
+    private final ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
+    private final String serviceId;
     private final AtomicInteger position;
 
     public GrayVersionLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider, String serviceId) {
